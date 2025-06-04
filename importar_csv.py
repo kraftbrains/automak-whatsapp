@@ -1,5 +1,6 @@
 import pandas as pd
 import psycopg2
+from db_config import DB_CONFIG
 
 def importar_csv_para_postgres(csv_path, db_config):
     df = pd.read_csv(csv_path)
@@ -47,12 +48,6 @@ def export_usdlk_to_numeros(db_config, numeros_path):
         f.write(']\n')
 
 if __name__ == "__main__":
-    db_config = {
-        'dbname': 'automak',
-        'user': 'dbmgcloud',
-        'password': 'dbmgcloud4090',
-        'host': '201.23.18.217',
-        'port': '5432'
-    }
+    db_config = DB_CONFIG
     importar_csv_para_postgres('google.csv', db_config)
     export_usdlk_to_numeros(db_config, 'numeros.py')
