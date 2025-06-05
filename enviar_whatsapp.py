@@ -16,10 +16,18 @@ mensagem = (
     "Ou responda esta mensagem para saber mais!"
 )
 
-# Define o horário inicial para envio (1 minuto à frente do horário atual)
+
+# Define o horário inicial para envio (1 minuto e 10 segundos à frente do horário atual)
 agora = datetime.datetime.now()
 hora = agora.hour
-minuto = agora.minute + 1
+minuto = agora.minute
+segundo = agora.second
+
+# Garante que o primeiro envio será pelo menos 1 minuto e 10 segundos à frente
+if segundo > 50:
+    minuto += 2  # Se já passou de 50 segundos, pula 2 minutos
+else:
+    minuto += 1  # Caso contrário, adiciona 1 minuto
 
 for i, numero in enumerate(numeros):
     # Agenda cada mensagem com 1 minuto de diferença
