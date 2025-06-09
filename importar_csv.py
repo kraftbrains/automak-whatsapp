@@ -36,7 +36,7 @@ def normalize_brazilian_number(num):
 def export_usdlk_to_numeros(db_config, numeros_path):
     conn = psycopg2.connect(**db_config)
     cursor = conn.cursor()
-    cursor.execute('SELECT "UsdlK" FROM google_data_scapper')
+    cursor.execute('SELECT "UsdlK" FROM google_data_scapper WHERE "lcr4fd href" = %s AND "UsdlK" <> %s', ('NaN', 'NaN'))
     numeros = [normalize_brazilian_number(row[0]) for row in cursor.fetchall()]
     numeros = [n for n in numeros if n]
     cursor.close()

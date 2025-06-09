@@ -1,6 +1,7 @@
 import pywhatkit
 import datetime
 import time
+import random
 
 from numeros import numeros
 
@@ -16,26 +17,31 @@ mensagem = (
     "Ou responda esta mensagem para saber mais!"
 )
 
+emojis = ['😊', '👍', '😉', '👋', '🤝', '🙏']
 
-# Define o horário inicial para envio (1 minuto e 10 segundos à frente do horário atual)
+
 agora = datetime.datetime.now()
 hora = agora.hour
 minuto = agora.minute
 segundo = agora.second
 
-# Garante que o primeiro envio será pelo menos 1 minuto e 10 segundos à frente
+
 if segundo > 50:
-    minuto += 2  # Se já passou de 50 segundos, pula 2 minutos
+    minuto += 3
 else:
-    minuto += 1  # Caso contrário, adiciona 1 minuto
+    minuto += 2
 
 for i, numero in enumerate(numeros):
-    # Agenda cada mensagem com 1 minuto de diferença
-    send_minute = minuto + i
+
+    mensagem_personalizada = f"{mensagem}\n{random.choice(emojis)}"
+    send_minute = minuto + i * 2
     send_hour = hora + (send_minute // 60)
     send_minute = send_minute % 60
-    pywhatkit.sendwhatmsg(numero, mensagem, send_hour, send_minute, wait_time=10, tab_close=True)
+    pywhatkit.sendwhatmsg(numero, mensagem_personalizada, send_hour, send_minute, wait_time=10, tab_close=True)
     print(f"Mensagem agendada para {numero} às {send_hour:02d}:{send_minute:02d}")
-    time.sleep(5)  # Pequeno intervalo para evitar sobreposição
+    time.sleep(5)
+    if (i + 1) % 10 == 0:
+        print("Pausa de segurança para evitar bloqueio...")
+        time.sleep(60)
 
 print("Todas as mensagens foram agendadas para envio no WhatsApp Web.")
